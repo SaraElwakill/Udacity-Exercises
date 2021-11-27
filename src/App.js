@@ -6,7 +6,10 @@ import Shelf from './Components/Shelf'
 
 import {getAll} from './BooksAPI'
 
-
+async function updateBooks(app){
+  const allBooks = await getAll()
+  app.setState((state)=>({books: allBooks}))
+}
 class BooksApp extends React.Component {
   state = {
 
@@ -15,16 +18,18 @@ class BooksApp extends React.Component {
   }
 
   componentDidMount() {
-    this.updateShelfs();
+    updateBooks(this)
+    // this.updateShelfs();
   }
   
-
-  updateShelfs() { 
-    getAll()
-      .then(books => this.setState(() => ({books: books})))
-  }
+  
+  // updateShelfs() { 
+  //   getAll()
+  //     .then(books => this.setState(() => ({books: books})))
+  // }
 
   render() {
+    console.log(this.state.books)
     return (
       // heading
           <div className="list-books">
@@ -37,18 +42,18 @@ class BooksApp extends React.Component {
                 <Shelf
                   title="Currently Reading"
                   books={this.state.books.filter(o => o.shelf === "currentlyReading")}
-                  updateShelfs={(book, shelf) => this.updateShelfs()}
+                  updateShelfs={(book, shelf) => updateBooks()}
                   
                 />
                 <Shelf
                   title="Want to Read"
                   books={this.state.books.filter(o => o.shelf === "wantToRead")}
-                  updateShelfs={(book, shelf) => this.updateShelfs()}
+                  updateShelfs={(book, shelf) => updateBooks()}
                 />
                 <Shelf
                   title="Read"
                   books={this.state.books.filter(o => o.shelf === "read")}
-                  updateShelfs={(book, shelf) => this.updateShelfs()}
+                  updateShelfs={(book, shelf) => updateBooks()}
                 />
           
             </div>
