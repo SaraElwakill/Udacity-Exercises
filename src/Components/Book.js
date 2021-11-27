@@ -5,14 +5,18 @@ import { useState } from 'react'
 
 
 const Book = ({book, updateShelfs=null}) => {
+
     const moveTo = (book, shelf) => {
         update(book, shelf)
             .then(() => {if (updateShelfs) updateShelfs()})
     };
+
     const [shelf, setShelf] = useState(book.shelf);
+    
     if (!shelf)
         get(book.id)
             .then(book => setShelf(book.shelf));
+
     return (
         <div className="book">
             <div className="book-top">
